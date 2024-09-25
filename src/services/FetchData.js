@@ -30,7 +30,7 @@ export const fetchData = async (url) => {
   }
 };
 
-export const referenceUpdate = async (url) => {
+export const referenceUpdate = async () => {
   const getCurrentMonthAndYear = () => {
     const months = [
       'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
@@ -44,8 +44,8 @@ export const referenceUpdate = async (url) => {
     return `${month}/${year}`;
   };
 
-  const cacheData = (url, data) => {
-    localStorage.setItem(url, JSON.stringify(data));
+  const cacheData = (data) => {
+    localStorage.setItem('/api/referencia', JSON.stringify(data));
   };
 
   const currentReference = getCurrentMonthAndYear();
@@ -63,7 +63,7 @@ export const referenceUpdate = async (url) => {
       }
 
       const newData = await response.json();
-      cacheData(url, newData);
+      cacheData(newData);
       console.log('Fetched updated reference data');
       return newData;
     } catch (error) {
