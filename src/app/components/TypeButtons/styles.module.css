@@ -1,0 +1,22 @@
+.buttonGroup {
+  display: flex;
+  /* gap: var(--md-1); */
+  margin-top: var(--md-1);
+  width: 100%;
+  justify-content: space-between;
+}
+
+.buttonGroup button {
+  padding: var(--sm-3) var(--md-2);
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  opacity: 60%;
+  transition: 0.2s ease-in;
+}
+
+.buttonGroup button:hover,
+.buttonGroup button:active
+ {
+  opacity: 100%;
+}

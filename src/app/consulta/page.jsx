@@ -5,6 +5,7 @@ import Skeleton from '@/app/components/Skeleton'
 import styles from './styles.module.css'
 import { referenceUpdate } from "@/services/FetchData"
 import ReferenceDrop from "../components/ReferenceDrop"
+import TypeButtons from "../components/TypeButtons"
 
 const Consulta = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -29,11 +30,15 @@ const Consulta = () => {
       {isLoading ? (
         <Skeleton />
       ) : (
-        <ReferenceDrop
-          referenceTable={referenceTable}
-          selectedReference={selectedReference}
-          setSelectedReference={setSelectedReference}
-        />
+        <>
+          <ReferenceDrop
+            referenceTable={referenceTable}
+            selectedReference={selectedReference}
+            setSelectedReference={setSelectedReference}
+          />
+
+          <TypeButtons />
+        </>
       )}
     </div>
   )

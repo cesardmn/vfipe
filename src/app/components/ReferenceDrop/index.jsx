@@ -1,4 +1,5 @@
 import React from "react";
+import styles from './styles.module.css'
 
 const ReferenceDrop = ({ referenceTable, selectedReference, setSelectedReference }) => {
 
@@ -7,7 +8,10 @@ const ReferenceDrop = ({ referenceTable, selectedReference, setSelectedReference
   };
 
   return (
-    <select value={selectedReference} onChange={handleChange}>
+    <select 
+      className={styles.drop}
+      value={selectedReference} 
+      onChange={handleChange}>
       {referenceTable.length > 0 ? (
         referenceTable.map(reference => (
           <option key={reference.id} value={reference.id}>

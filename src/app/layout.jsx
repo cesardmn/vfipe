@@ -1,5 +1,6 @@
 import "./globals.css";
 import Header from "./components/Header";
+import styles from  './page.module.css'
 
 export const metadata = {
   title: "V FIPE",
@@ -11,7 +12,7 @@ export default function RootLayout({ children }) {
     <html lang="pt-br">
       <body>
         <Header />
-        <main>
+        <main className={styles.main} >
           {children}
         </main>
       </body>
