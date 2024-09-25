@@ -55,4 +55,10 @@ body {
   color: var(--wt-3);
   display: grid;
   grid-template-rows: calc(2* var(--lg-1)) 1fr;
+  overflow: hidden;
+}
+
+main {
+  height: 100%;
+  width: 100%;
 }
