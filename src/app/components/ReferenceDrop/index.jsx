@@ -67,8 +67,6 @@ const ReferenceDrop = () => {
                 ))
               }
             </select>
-
-            <pre>{JSON.stringify(step)}</pre>
           </>
         )
       }
