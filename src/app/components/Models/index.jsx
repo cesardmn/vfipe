@@ -15,7 +15,8 @@ const Models = () => {
 
   const handleModels = async () => {
     setLoading(true)
-    const data = await fetchData(`/api/modelos/${step.refId}/${step.typeId}/${step.brandId}`)
+    const { refId, typeId, brandId } = step
+    const data = await fetchData(`/api/modelos/${refId}/${typeId}/${brandId}`)
     setModels(data)
     setLoading(false)
   }
@@ -80,87 +81,3 @@ const Models = () => {
 }
 
 export default Models
-
-
-
-// import { useState, useEffect, useRef } from "react";
-// import { useStep } from "@/app/providers/StepProvider"
-// import Skeleton from '@/app/components/Skeleton';
-// import { fetchData } from "@/services/FetchData";
-
-
-// const Models = () => {
-//   const { step, setStep } = useStep()
-//   const [loading, setLoading] = useState(false);
-//   const [models, setModels] = useState([])
-//   const [result, setResult] = useState([]);
-//   const [searchTerm, setSearchTerm] = useState('');
-//   const searchInputRef = useRef(null);
-
-
-//   const handleModels = async () => {
-//     setLoading(true);
-//     if (step.modelId !== '') {
-//       const data = await fetchData(`/api/modelos/${step.refId}/${step.typeId}/${step.modelId}`)
-//       console.log(data)
-//       setModels(data)
-//     }
-//     setLoading(false);
-//   }
-
-//   useEffect(() => {
-//     handleModels();
-//     setSearchTerm('')
-//     if (searchInputRef.current) {
-//       searchInputRef.current.focus();
-//     }
-//   }, [step]);
-
-//   useEffect(() => {
-//     const searchWords = searchTerm.toLowerCase().trim().split(/\s+/);
-//     const filtered = models.filter(item =>
-//       searchWords.every(word =>
-//         item.model.toLowerCase().includes(word)
-//       )
-//     );
-//     setResult(filtered);
-//   }, [searchTerm, models]);
-
-//   const handleSearchChange = (event) => {
-//     setSearchTerm(event.target.value);
-//   };
-
-
-//   return (
-//     <>
-//       {loading ? (
-//         <Skeleton />
-//       ) : (
-//         <>
-//           <input
-//             type="search"
-//             ref={searchInputRef}
-//             value={searchTerm}
-//             onChange={handleSearchChange}
-//             placeholder="Search models..."
-//           />
-//           <ul>
-//             {result.map(item => (
-//               <li
-//                 key={item.id}
-//                 value={item.id}
-//                 // onClick={(e) => handleModel(e)}
-//                 >
-//                 {item.model}
-//               </li>
-//             ))}
-//           </ul>
-//         </>
-//       )}
-//     </>
-//   );
-// };
-
-
-
-// export default Models
