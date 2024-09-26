@@ -1,16 +1,29 @@
 import styles from './styles.module.css'
 import { useStep } from '@/app/providers/StepProvider'
+import { useBreadcrumbs } from '@/app/providers/BreadcrumbsProvider';
+
 
 const TypeButtons = () => {
-
+  
+  const { breadcrumbs, setBreadcrumbs } = useBreadcrumbs()
   const { step, setStep } = useStep()
 
+  const types = {
+    1: "carros",
+    2: "motos",
+    3: "pesados"
+  }
+
+
   const handleType = (id) => {
-    const newStep = {...step}
+    const newStep = { ...step }
     newStep.typeId = id
     newStep.brandId = ''
     newStep.modelId = ''
-      setStep(newStep)
+    setStep(newStep)
+    const newCrumbs = [breadcrumbs[0], types[id]]
+    setBreadcrumbs(newCrumbs)
+
   }
 
   return (

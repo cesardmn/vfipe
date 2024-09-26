@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
 import styles from './styles.module.css';
 import { useStep } from '@/app/providers/StepProvider';
+import { useBreadcrumbs } from '@/app/providers/BreadcrumbsProvider';
 import { referenceUpdate } from '@/services/FetchData';
 import Skeleton from "../Skeleton";
 
 const ReferenceDrop = () => {
   const { step, setStep } = useStep();
+  const { breadcrumbs, setBreadcrumbs } = useBreadcrumbs()
   const [referenceList, setReferenceList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const handleReference = async () => {
+
+    const newCrumbs = ['Tabela Referência']
+    setBreadcrumbs(newCrumbs)
+
     try {
       const data = await referenceUpdate();
       setReferenceList(data || []);
@@ -31,6 +37,8 @@ const ReferenceDrop = () => {
       typeId: '',
       brandId: '',
     }));
+    const newCrumbs = ['Tabela Referência']
+    setBreadcrumbs(newCrumbs)
   };
 
   useEffect(() => {

@@ -21,7 +21,6 @@ const Vehicles = () => {
 
       const vehiclesData = await Promise.all(vehiclePromises);
       setVehicles(vehiclesData);
-      console.log(vehiclesData[0])
     } catch (error) {
       console.error("Error fetching vehicles:", error);
     } finally {

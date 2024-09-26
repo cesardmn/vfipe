@@ -2,6 +2,8 @@ import { useStep } from '@/app/providers/StepProvider';
 import { fetchData } from '@/services/FetchData';
 import { useEffect, useState, useRef } from 'react';
 import Skeleton from '../Skeleton';
+import { useBreadcrumbs } from '@/app/providers/BreadcrumbsProvider';
+
 
 const Brands = () => {
   const { step, setStep } = useStep();
@@ -10,12 +12,15 @@ const Brands = () => {
   const [result, setResult] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const searchInputRef = useRef(null);
+  const { breadcrumbs, setBreadcrumbs } = useBreadcrumbs()
+
 
   const handleBrands = async () => {
     setLoading(true);
     if (step.typeId !== '') {
       const data = await fetchData(`/api/marcas/${step.refId}/${step.typeId}`);
       setBrands(data);
+
     }
     setLoading(false);
   };
@@ -46,6 +51,8 @@ const Brands = () => {
     const newStep = { ...step }
     newStep.brandId = e.target.value
     setStep(newStep)
+    const newCrumbs = [...breadcrumbs.slice(0, 2), e.target.innerText]
+    setBreadcrumbs(newCrumbs)
   }
 
   return (

@@ -2,6 +2,8 @@ import { useEffect, useState, useRef } from "react"
 import { useStep } from "@/app/providers/StepProvider"
 import { fetchData } from "@/services/FetchData"
 import Skeleton from '@/app/components/Skeleton';
+import { useBreadcrumbs } from '@/app/providers/BreadcrumbsProvider';
+
 
 const Models = () => {
 
@@ -11,6 +13,7 @@ const Models = () => {
   const [result, setResult] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const searchInputRef = useRef(null);
+  const { breadcrumbs, setBreadcrumbs } = useBreadcrumbs()
 
 
   const handleModels = async () => {
@@ -48,6 +51,8 @@ const Models = () => {
     const newStep = { ...step }
     newStep.modelId = e.target.value
     setStep(newStep)
+    const newCrumbs = [...breadcrumbs.slice(0, 3), e.target.innerText]
+    setBreadcrumbs(newCrumbs)
   }
 
   return (
