@@ -1,7 +1,8 @@
 import "./globals.css";
 import Header from "./components/Header";
-import styles from  './page.module.css'
+import styles from './page.module.css'
 
+import ClientProvider from '@/app/providers/ClientProvider'
 export const metadata = {
   title: "V FIPE",
   description: "O jeito mais simples de obter dados da Tabela Fipe.",
@@ -13,7 +14,9 @@ export default function RootLayout({ children }) {
       <body>
         <Header />
         <main className={styles.main} >
-          {children}
+          <ClientProvider>
+            {children}
+          </ClientProvider>
         </main>
       </body>
     </html>
