@@ -9,7 +9,7 @@ const Brands = () => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const searchInputRef = useRef(null); // Create a ref for the search input
+  const searchInputRef = useRef(null);
 
   const handleBrands = async () => {
     setLoading(true);
@@ -44,7 +44,7 @@ const Brands = () => {
 
   const handleModel = (e) => {
     const newStep = { ...step }
-    newStep.modelId = e.target.value
+    newStep.brandId = e.target.value
     setStep(newStep)
   }
 
@@ -56,7 +56,7 @@ const Brands = () => {
         <>
           <input
             type="search"
-            ref={searchInputRef} // Attach the ref to the input
+            ref={searchInputRef}
             value={searchTerm}
             onChange={handleSearchChange}
             placeholder="Search brands..."

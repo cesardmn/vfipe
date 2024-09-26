@@ -8,7 +8,9 @@ const TypeButtons = () => {
   const handleType = (id) => {
     const newStep = {...step}
     newStep.typeId = id
-    setStep(newStep)
+    newStep.brandId = ''
+    newStep.modelId = ''
+      setStep(newStep)
   }
 
   return (

@@ -29,6 +29,7 @@ const ReferenceDrop = () => {
       ...prevStep,
       refId: selectedRefId,
       typeId: '',
+      brandId: '',
     }));
   };
 
