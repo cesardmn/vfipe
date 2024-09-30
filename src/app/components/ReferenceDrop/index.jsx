@@ -46,32 +46,29 @@ const ReferenceDrop = () => {
   }, []);
 
   return (
-    <div >
+    <>
       {
         loading ? (
           <Skeleton />
         ) : (
-          <>
-            <label htmlFor="referenceSelect">Tabela referência:</label>
-            <select
-              id="referenceSelect"
-              onChange={handleChange}
-              disabled={loading}
-              className={styles.drop}
-            >
-              {
-                referenceList.map(reference => (
-                  <option key={reference.id} value={reference.id}>
-                    {reference.description}
-                  </option>
-                ))
-              }
-            </select>
-          </>
+          <select
+            id="referenceSelect"
+            onChange={handleChange}
+            disabled={loading}
+            className={styles.drop}
+          >
+            {
+              referenceList.map(reference => (
+                <option key={reference.id} value={reference.id}>
+                  {reference.description}
+                </option>
+              ))
+            }
+          </select>
         )
       }
 
-    </div>
+    </>
   );
 };
 

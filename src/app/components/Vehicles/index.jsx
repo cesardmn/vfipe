@@ -3,6 +3,8 @@ import { fetchData } from "@/services/FetchData";
 import { useEffect, useState } from "react";
 import Skeleton from "../Skeleton";
 
+import styles from './styles.module.css'
+
 const Vehicles = () => {
   const { step } = useStep();
   const [vehicles, setVehicles] = useState([]);
@@ -11,15 +13,24 @@ const Vehicles = () => {
   const handleVehicles = async () => {
     const { refId, typeId, brandId, modelId } = step;
     setLoading(true);
-
+  
     try {
       const years = await fetchData(`/api/anomodelo/${refId}/${typeId}/${brandId}/${modelId}`);
-      const vehiclePromises = years.map(async (year) => {
+      
+      const vehiclesData = await years.reduce(async (acc, year) => {
+        const accumulatedVehicles = await acc; // Aguarda o acumulador
         const url = `/api/vehicle/${refId}/${typeId}/${brandId}/${modelId}/${year.id}`;
-        return fetchData(url);
-      });
-
-      const vehiclesData = await Promise.all(vehiclePromises);
+        
+        try {
+          const vehicleData = await fetchData(url);
+          return [...accumulatedVehicles, vehicleData]; // Adiciona o veículo ao acumulador
+        } catch (error) {
+          console.error(`Error fetching vehicle for year ${year.id}:`, error);
+          return accumulatedVehicles; // Retorna o acumulador mesmo em caso de erro
+        }
+  
+      }, Promise.resolve([])); // Começa com uma promessa resolvida que contém um array vazio
+  
       setVehicles(vehiclesData);
     } catch (error) {
       console.error("Error fetching vehicles:", error);
@@ -27,7 +38,7 @@ const Vehicles = () => {
       setLoading(false);
     }
   };
-
+  
   useEffect(() => {
     if (step.refId && step.typeId && step.brandId && step.modelId) {
       handleVehicles();
@@ -39,15 +50,15 @@ const Vehicles = () => {
   }
 
   return (
-    <>
-      {
-        vehicles.length > 0 &&
-        <span>{`${vehicles[0].brand} - ${vehicles[0].model}`}</span>}
-      <table>
+    <div className={styles.tableContainer} >
+      <table className={styles.table} >
+        <caption>
+          {`Código FIPE: ${(vehicles.length > 0) && vehicles[0].fipe}`}
+        </caption>
         <thead>
           <tr>
             <th>ano</th>
-            <th>combustivel</th>
+            <th>combustível</th>
             <th>valor</th>
           </tr>
         </thead>
@@ -61,7 +72,7 @@ const Vehicles = () => {
           ))}
         </tbody>
       </table>
-    </>
+    </div>
   );
 };
 

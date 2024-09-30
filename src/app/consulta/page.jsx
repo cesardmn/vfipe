@@ -28,6 +28,7 @@ const Consulta = () => {
         )
       }
       <Result />
+
     </div>
 
   )

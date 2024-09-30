@@ -4,14 +4,15 @@
   height: auto;
   align-items: center;
   justify-content: flex-start;
-  width: 650px;
+  width: 320px;
   box-shadow: var(--shadow);
   gap: var(--md-3);
+  margin-top: var(--md-3);
 }
 
 .skeleton {
   height: var(--lg-1);
-  width: 600px;
+  width: 320px;
   background-color: var(--gr-2);
   position: relative;
   overflow: hidden;

@@ -1,22 +1,26 @@
 .buttonGroup {
   display: flex;
-  /* gap: var(--md-1); */
+  gap: var(--lg-1);
   margin-top: var(--md-1);
   width: 100%;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .buttonGroup button {
-  padding: var(--sm-3) var(--md-2);
-  border-radius: 8px;
-  font-weight: bold;
+  padding: var(--md-1) var(--md-2);
+  border: none;
+  border-radius: var(--sm-1);
+  font-size: var(--md-1);
   cursor: pointer;
-  opacity: 60%;
-  transition: 0.2s ease-in;
-}
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  background-color: var(--bk-2);
+  color: var(--wt-3);
+  box-shadow: var(--shadow);
+  font-weight: bold;
+} 
 
-.buttonGroup button:hover,
-.buttonGroup button:active
- {
-  opacity: 100%;
+.buttonGroup button:hover {
+  background-color: var(--or-3);
+  color: var(--wt-1);
+
 }

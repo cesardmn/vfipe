@@ -3,6 +3,7 @@ import { useStep } from "@/app/providers/StepProvider"
 import { fetchData } from "@/services/FetchData"
 import Skeleton from '@/app/components/Skeleton';
 import { useBreadcrumbs } from '@/app/providers/BreadcrumbsProvider';
+import styles from './styles.module.css'
 
 
 const Models = () => {
@@ -56,19 +57,20 @@ const Models = () => {
   }
 
   return (
-    <>
+    <div className={styles.container}>
       <input
         type="search"
         ref={searchInputRef}
         value={searchTerm}
         onChange={handleSearchChange}
-        placeholder="Search Models..."
+        placeholder="Pesquisar modelos..."
+        className={styles.search}
       />
       {
         loading ?
           <Skeleton /> :
           (
-            <ul>
+            <ul className={styles.ul} >
               {result.map(item => (
                 <li
                   key={item.id}
@@ -81,7 +83,7 @@ const Models = () => {
             </ul>
           )
       }
-    </>
+    </div>
   )
 }
 

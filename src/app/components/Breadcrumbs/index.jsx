@@ -1,6 +1,7 @@
 import { useBreadcrumbs } from '@/app/providers/BreadcrumbsProvider';
 import { useStep } from '@/app/providers/StepProvider';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
+import styles from './styles.module.css'
 
 const Breadcrumbs = () => {
   const { breadcrumbs, setBreadcrumbs } = useBreadcrumbs();
@@ -51,14 +52,21 @@ const Breadcrumbs = () => {
   };
 
   return (
-    <div>
+    <div className={styles.crumbs} >
       {crumbs.map((crumb, index) => (
-        <span key={index} id={index} onClick={handleClick}>
-          {crumb}
-          {index < crumbs.length - 1 && <span> » </span>}
-        </span>
+        <Fragment key={index}>
+          <span
+            id={index}
+            className={index === crumbs.length - 1 ? styles.active : styles.crumb}
+            onClick={handleClick}
+          >
+            {crumb}
+          </span>
+          {index < crumbs.length - 1 && <span className={styles.separator}> » </span>}
+        </Fragment>
       ))}
     </div>
+
   );
 };
 

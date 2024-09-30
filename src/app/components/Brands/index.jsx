@@ -4,6 +4,8 @@ import { useEffect, useState, useRef } from 'react';
 import Skeleton from '../Skeleton';
 import { useBreadcrumbs } from '@/app/providers/BreadcrumbsProvider';
 
+import styles from './styles.module.css'
+
 
 const Brands = () => {
   const { step, setStep } = useStep();
@@ -56,7 +58,7 @@ const Brands = () => {
   }
 
   return (
-    <>
+    <div className={styles.container}>
       {loading ? (
         <Skeleton />
       ) : (
@@ -66,9 +68,10 @@ const Brands = () => {
             ref={searchInputRef}
             value={searchTerm}
             onChange={handleSearchChange}
-            placeholder="Search brands..."
+            placeholder="Pesquisar marcas..."
+            className={styles.search}
           />
-          <ul>
+          <ul className={styles.ul} >
             {result.map(item => (
               <li
                 key={item.id}
@@ -80,7 +83,7 @@ const Brands = () => {
           </ul>
         </>
       )}
-    </>
+    </div>
   );
 };
 

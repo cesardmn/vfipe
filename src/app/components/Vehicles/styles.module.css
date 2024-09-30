@@ -1,0 +1,43 @@
+.tableContainer {
+  max-height: 400px;
+  overflow-y: auto;
+  scrollbar-color: var(--bk-2) var(--bk-3);
+  border: 1px solid var(--bk-1);
+  background-color: var(--bk-2);
+  box-shadow: var(--shadow);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table caption {
+  position: sticky;
+  top: 0;
+  background-color: var(--bk-2);
+  color: var(--wt-1);
+  padding: var(--md-1);
+  z-index: 1;
+}
+
+.table thead {
+  position: sticky;
+  top: 0;
+  background-color: var(--bk-3);
+  color: var(--wt-1);
+  z-index: 2;
+}
+
+.table th,
+.table td {
+  padding: var(--md-1)  var(--md-3);
+  text-align: left;
+  border-bottom: 1px solid var(--bk-1);
+  color: var(--wt-2);
+  text-align: center;
+}
+
+.table tbody tr:hover {
+  background-color: var(--gr-3);
+}
