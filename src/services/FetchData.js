@@ -5,7 +5,9 @@ export const fetchData = async (url) => {
   };
 
   const cacheData = (url, data) => {
-    localStorage.setItem(url, JSON.stringify(data));
+    if (!data.error) {
+      localStorage.setItem(url, JSON.stringify(data));
+    }
   };
 
   try {
@@ -16,11 +18,12 @@ export const fetchData = async (url) => {
     }
 
     const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
+    const data = await response.json();
+
+    if (!response.ok || data.error) {
+      throw new Error(data.error || 'Network response was not ok');
     }
 
-    const data = await response.json();
     cacheData(url, data);
     console.log('Fetched new data');
     return data;
@@ -45,7 +48,9 @@ export const referenceUpdate = async () => {
   };
 
   const cacheData = (data) => {
-    localStorage.setItem('/api/referencia', JSON.stringify(data));
+    if (!data.error) {
+      localStorage.setItem('/api/referencia', JSON.stringify(data));
+    }
   };
 
   const currentReference = getCurrentMonthAndYear();
@@ -58,11 +63,12 @@ export const referenceUpdate = async () => {
   if (currentReference !== lastReference) {
     try {
       const response = await fetch('/api/referencia');
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+      const newData = await response.json();
+
+      if (!response.ok || newData.error) {
+        throw new Error(newData.error || 'Network response was not ok');
       }
 
-      const newData = await response.json();
       cacheData(newData);
       console.log('Fetched updated reference data');
       return newData;
