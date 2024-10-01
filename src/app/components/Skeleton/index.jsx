@@ -1,4 +1,4 @@
-import styles from './styles.module.css';
+import styles from './styles.module.css'
 
 const Skeleton = () => {
   return (
@@ -10,7 +10,7 @@ const Skeleton = () => {
         />
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default Skeleton;
+export default Skeleton

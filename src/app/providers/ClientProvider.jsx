@@ -6,9 +6,7 @@ import { StepProvider } from './StepProvider'
 const ClientProvider = ({ children }) => {
   return (
     <StepProvider>
-      <BreadcrumbsProvider>
-        {children}
-      </BreadcrumbsProvider>
+      <BreadcrumbsProvider>{children}</BreadcrumbsProvider>
     </StepProvider>
   )
 }

@@ -1,75 +1,69 @@
-import React, { useEffect, useState } from "react";
-import styles from './styles.module.css';
-import { useStep } from '@/app/providers/StepProvider';
-import { useBreadcrumbs } from '@/app/providers/BreadcrumbsProvider';
-import { referenceUpdate } from '@/services/FetchData';
-import Skeleton from "../Skeleton";
+import React, { useEffect, useState } from 'react'
+import styles from './styles.module.css'
+import { useStep } from '@/app/providers/StepProvider'
+import { useBreadcrumbs } from '@/app/providers/BreadcrumbsProvider'
+import { referenceUpdate } from '@/services/FetchData'
+import Skeleton from '../Skeleton'
 
 const ReferenceDrop = () => {
-  const { step, setStep } = useStep();
+  const { step, setStep } = useStep()
   const { breadcrumbs, setBreadcrumbs } = useBreadcrumbs()
-  const [referenceList, setReferenceList] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [referenceList, setReferenceList] = useState([])
+  const [loading, setLoading] = useState(true)
 
   const handleReference = async () => {
-
     const newCrumbs = ['Tabela Referência']
     setBreadcrumbs(newCrumbs)
 
     try {
-      const data = await referenceUpdate();
-      setReferenceList(data || []);
+      const data = await referenceUpdate()
+      setReferenceList(data || [])
       if (data && data.length > 0) {
-        setStep(prevStep => ({ ...prevStep, refId: data[0].id }));
+        setStep((prevStep) => ({ ...prevStep, refId: data[0].id }))
       }
     } catch (error) {
-      console.error("Erro ao buscar referências:", error);
+      console.error('Erro ao buscar referências:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleChange = (e) => {
-    const selectedRefId = e.target.value;
-    setStep(prevStep => ({
+    const selectedRefId = e.target.value
+    setStep((prevStep) => ({
       ...prevStep,
       refId: selectedRefId,
       typeId: '',
       brandId: '',
-    }));
+    }))
     const newCrumbs = ['Tabela Referência']
     setBreadcrumbs(newCrumbs)
-  };
+  }
 
   useEffect(() => {
-    handleReference();
-  }, []);
+    handleReference()
+  }, [])
 
   return (
     <>
-      {
-        loading ? (
-          <Skeleton />
-        ) : (
-          <select
-            id="referenceSelect"
-            onChange={handleChange}
-            disabled={loading}
-            className={styles.drop}
-          >
-            {
-              referenceList.map(reference => (
-                <option key={reference.id} value={reference.id}>
-                  {reference.description}
-                </option>
-              ))
-            }
-          </select>
-        )
-      }
-
+      {loading ? (
+        <Skeleton />
+      ) : (
+        <select
+          id="referenceSelect"
+          onChange={handleChange}
+          disabled={loading}
+          className={styles.drop}
+        >
+          {referenceList.map((reference) => (
+            <option key={reference.id} value={reference.id}>
+              {reference.description}
+            </option>
+          ))}
+        </select>
+      )}
     </>
-  );
-};
+  )
+}
 
-export default ReferenceDrop;
+export default ReferenceDrop

@@ -1,66 +1,66 @@
-  .tableContainer {
-    max-height: 420px;
-    overflow-y: auto;
-    scrollbar-color: var(--bk-2) var(--bk-3);
-    border: 1px solid var(--bk-1);
-    background-color: var(--bk-2);
-    box-shadow: var(--shadow);
-    margin: var(--md-1) 0;
-  }
+.tableContainer {
+  max-height: 420px;
+  overflow-y: auto;
+  scrollbar-color: var(--bk-2) var(--bk-3);
+  border: 1px solid var(--bk-1);
+  background-color: var(--bk-2);
+  box-shadow: var(--shadow);
+  margin: var(--md-1) 0;
+}
 
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-  }
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
 
-  .table caption {
-    position: sticky;
-    top: 0;
-    background-color: var(--bk-2);
-    color: var(--wt-1);
-    padding: var(--md-1);
-    z-index: 1;
-  }
+.table caption {
+  position: sticky;
+  top: 0;
+  background-color: var(--bk-2);
+  color: var(--wt-1);
+  padding: var(--md-1);
+  z-index: 1;
+}
 
-  .table thead {
-    position: sticky;
-    top: 0;
-    background-color: var(--bk-3);
-    color: var(--wt-1);
-    z-index: 2;
-  }
+.table thead {
+  position: sticky;
+  top: 0;
+  background-color: var(--bk-3);
+  color: var(--wt-1);
+  z-index: 2;
+}
 
-  .table th,
-  .table td {
-    padding: var(--md-1) var(--md-3);
-    text-align: left;
-    border-bottom: 1px solid var(--bk-1);
-    color: var(--wt-2);
-    text-align: center;
-  }
+.table th,
+.table td {
+  padding: var(--md-1) var(--md-3);
+  text-align: left;
+  border-bottom: 1px solid var(--bk-1);
+  color: var(--wt-2);
+  text-align: center;
+}
 
-  .table tbody tr:hover {
-    background-color: var(--gr-3);
-  }
+.table tbody tr:hover {
+  background-color: var(--gr-3);
+}
 
-  .pagination button {
-    margin: 0 5px;
-    padding: 5px 10px;
-    border: none;
-    background-color: var(--or-3);
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-    opacity: 60%;
-  }
+.pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: none;
+  background-color: var(--or-3);
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  opacity: 60%;
+}
 
-  .pagination button.active {
-    background-color: var(--or-3);
-    opacity: 100%;
-    cursor: default;
-  }
+.pagination button.active {
+  background-color: var(--or-3);
+  opacity: 100%;
+  cursor: default;
+}
 
-  .pagination button:hover {
-    background-color: var(--or-3);
-    opacity: 100%;
-  }
+.pagination button:hover {
+  background-color: var(--or-3);
+  opacity: 100%;
+}
