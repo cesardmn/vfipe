@@ -2,6 +2,7 @@ export async function GET(requestParams) {
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    cache: 'no-store',
   }
 
   const baseUrl = process.env.BASE_URL
