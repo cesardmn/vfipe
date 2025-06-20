@@ -2,13 +2,12 @@ import { useStep } from '@/app/providers/StepProvider'
 import Brands from '@/app/components/Brands'
 import Models from '@/app/components/Models'
 import Vehicles from '@/app/components/Vehicles'
-import styles from './styles.module.css'
 
 const Result = () => {
   const { step } = useStep()
 
   return (
-    <div className={styles.result}>
+    <div className="">
       {step.refId !== '' && step.typeId !== '' && step.brandId === '' && (
         <Brands />
       )}

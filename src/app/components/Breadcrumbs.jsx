@@ -1,7 +1,6 @@
 import { useBreadcrumbs } from '@/app/providers/BreadcrumbsProvider'
 import { useStep } from '@/app/providers/StepProvider'
-import { useEffect, useState, Fragment } from 'react'
-import styles from './styles.module.css'
+import { useEffect, useState } from 'react'
 
 const Breadcrumbs = () => {
   const { breadcrumbs, setBreadcrumbs } = useBreadcrumbs()
@@ -13,9 +12,9 @@ const Breadcrumbs = () => {
   }, [step, breadcrumbs])
 
   const handleClick = (e) => {
-    const index = e.target.id
+    const index = Number(e.target.id)
 
-    if (index == 0) {
+    if (index === 0) {
       const newStep = {
         refId: step.refId,
         typeId: '',
@@ -25,7 +24,7 @@ const Breadcrumbs = () => {
       setStep(newStep)
     }
 
-    if (index == 1) {
+    if (index === 1) {
       const newStep = {
         refId: step.refId,
         typeId: step.typeId,
@@ -37,7 +36,7 @@ const Breadcrumbs = () => {
       setBreadcrumbs(newCrumbs)
     }
 
-    if (index == 2) {
+    if (index === 2) {
       const newStep = {
         refId: step.refId,
         typeId: step.typeId,
@@ -51,22 +50,24 @@ const Breadcrumbs = () => {
   }
 
   return (
-    <div className={styles.crumbs}>
+    <div className="flex items-center space-x-2 bg-bk-1 p-3 rounded-lg shadow border border-bk-3">
       {crumbs.map((crumb, index) => (
-        <Fragment key={index}>
-          <span
+        <div key={index} className="flex items-center">
+          <button
             id={index}
-            className={
-              index === crumbs.length - 1 ? styles.active : styles.crumb
-            }
+            className={`text-sm ${
+              index === crumbs.length - 1
+                ? 'text-or-1 font-semibold cursor-default'
+                : 'text-gr-1 hover:text-or-2 transition-colors'
+            }`}
             onClick={handleClick}
           >
             {crumb}
-          </span>
+          </button>
           {index < crumbs.length - 1 && (
-            <span className={styles.separator}> » </span>
+            <span className="mx-2 text-gr-2">/</span>
           )}
-        </Fragment>
+        </div>
       ))}
     </div>
   )

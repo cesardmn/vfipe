@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Consulta FIPE | Valores de Veículos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: '#black',
+                100: '#ffedd5',
+                200: '#fed7aa',
+                300: '#fdba74',
+                400: '#fb923c',
+                500: '#f97316',
+                600: '#ea580c',
+                700: '#c2410c',
+                800: '#9a3412',
+                900: '#7c2d12',
+              },
+              dark: {
+                900: '#0f172a',
+                800: '#1e293b',
+                700: '#334155',
+                600: '#475569',
+              },
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+          },
+        },
+      }
+    </script>
+    <style>
+      * {
+        font-size: 95%;
+      }
+      .fade-in {
+        animation: fadeIn 0.3s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .scrollbar-thin::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+
+      .scrollbar-thin::-webkit-scrollbar-thumb {
+        background-color: #fb923c;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+
+  <body class="bg-dark-900 text-gray-100 font-sans min-h-screen">
+    <!-- Header -->
+    <header class="bg-dark-800 shadow-lg">
+      <div
+        class="container mx-auto px-4 py-4 flex items-center justify-between"
+      >
+        <div class="flex items-center space-x-3">
+          <svg
+            class="w-10 h-10 text-primary-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+            ></path>
+          </svg>
+          <h1
+            class="text-2xl font-bold bg-gradient-to-r from-primary-400 to-primary-600 bg-clip-text text-transparent"
+          >
+            FIPE Explorer
+          </h1>
+        </div>
+        <div class="text-sm text-gray-400">
+          Atualizado em: <span class="text-primary-400">Junho/2024</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+      <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Hero Section -->
+        <div class="lg:w-1/3 bg-dark-800 rounded-xl p-6 shadow-lg">
+          <div class="space-y-6 sticky top-4">
+            <h2 class="text-2xl font-bold text-primary-400">
+              Consulta FIPE Simplificada
+            </h2>
+            <p class="text-gray-300">
+              Obtenha valores oficiais de veículos diretamente da tabela FIPE de
+              forma rápida e intuitiva.
+            </p>
+
+            <div class="bg-dark-700 p-4 rounded-lg">
+              <h3 class="font-semibold text-primary-300 mb-2 flex items-center">
+                <svg
+                  class="w-5 h-5 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                  ></path>
+                </svg>
+                Como usar:
+              </h3>
+              <ol class="list-decimal list-inside space-y-2 text-gray-300 pl-2">
+                <li>Selecione a tabela de referência</li>
+                <li>Escolha o tipo de veículo</li>
+                <li>Selecione marca e modelo</li>
+                <li>Veja os valores e anos disponíveis</li>
+              </ol>
+            </div>
+
+            <div class="bg-dark-700 p-4 rounded-lg">
+              <h3 class="font-semibold text-primary-300 mb-2 flex items-center">
+                <svg
+                  class="w-5 h-5 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                  ></path>
+                </svg>
+                Destaques:
+              </h3>
+              <ul class="space-y-2 text-gray-300">
+                <li class="flex items-start">
+                  <svg
+                    class="w-5 h-5 text-green-400 mr-2 flex-shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    ></path>
+                  </svg>
+                  Dados direto da tabela FIPE oficial
+                </li>
+                <li class="flex items-start">
+                  <svg
+                    class="w-5 h-5 text-green-400 mr-2 flex-shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    ></path>
+                  </svg>
+                  Consultas rápidas e sem complicação
+                </li>
+                <li class="flex items-start">
+                  <svg
+                    class="w-5 h-5 text-green-400 mr-2 flex-shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    ></path>
+                  </svg>
+                  Design responsivo para qualquer dispositivo
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tool Section -->
+        <div class="lg:w-2/3 space-y-6">
+          <!-- Breadcrumbs -->
+          <div class="flex items-center text-sm text-gray-400 flex-wrap gap-2">
+            <span class="cursor-pointer hover:text-primary-400 transition"
+              >Home</span
+            >
+            <span class="text-gray-600">/</span>
+            <span class="cursor-pointer hover:text-primary-400 transition"
+              >Consulta</span
+            >
+            <span class="text-gray-600">/</span>
+            <span class="text-primary-400">Veículos</span>
+          </div>
+
+          <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Reference Selector - Ocupa 2 colunas em mobile, 1 em desktop -->
+            <div
+              class="bg-dark-800 rounded-xl p-5 shadow-lg fade-in md:col-span-1"
+            >
+              <label
+                for="reference"
+                class="block text-sm font-medium text-gray-300 mb-2"
+              >
+                <div class="flex items-center">
+                  <svg
+                    class="w-4 h-4 mr-2 text-primary-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    ></path>
+                  </svg>
+                  Tabela de Referência
+                </div>
+              </label>
+              <select
+                id="reference"
+                class="w-full bg-dark-700 border border-dark-600 text-gray-200 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition text-sm"
+              >
+                <option selected>Junho/2024</option>
+                <option>Maio/2024</option>
+                <option>Abril/2024</option>
+              </select>
+            </div>
+
+            <!-- Vehicle Type Selector - Ocupa 2 colunas em mobile, 1 em desktop -->
+            <div
+              class="bg-dark-800 rounded-xl p-5 shadow-lg fade-in md:col-span-2"
+            >
+              <h3
+                class="text-sm font-medium text-gray-300 mb-3 flex items-center"
+              >
+                <svg
+                  class="w-4 h-4 mr-2 text-primary-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                  ></path>
+                </svg>
+                Tipo de Veículo
+              </h3>
+              <div class="flex flex-wrap gap-2">
+                <button
+                  class="flex-1 min-w-[120px] px-3 py-2 bg-primary-600 hover:bg-primary-500 text-white rounded-lg font-medium transition flex items-center justify-center text-sm"
+                >
+                  <svg
+                    class="w-4 h-4 mr-1.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 11l7-7 7 7M5 19l7-7 7 7"
+                    ></path>
+                  </svg>
+                  Carros
+                </button>
+                <button
+                  class="flex-1 min-w-[120px] px-3 py-2 bg-dark-700 hover:bg-dark-600 text-gray-300 rounded-lg font-medium transition flex items-center justify-center text-sm"
+                >
+                  <svg
+                    class="w-4 h-4 mr-1.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    ></path>
+                  </svg>
+                  Motos
+                </button>
+                <button
+                  class="flex-1 min-w-[120px] px-3 py-2 bg-dark-700 hover:bg-dark-600 text-gray-300 rounded-lg font-medium transition flex items-center justify-center text-sm"
+                >
+                  <svg
+                    class="w-4 h-4 mr-1.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+                    ></path>
+                  </svg>
+                  Caminhões
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Results Section -->
+          <div class="bg-dark-800 rounded-xl p-6 shadow-lg fade-in">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="text-lg font-semibold text-gray-200">Resultados</h3>
+              <div class="relative">
+                <input
+                  type="text"
+                  placeholder="Pesquisar modelo..."
+                  class="bg-dark-700 border border-dark-600 text-gray-200 rounded-lg px-4 py-2 pl-10 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition text-sm w-64"
+                />
+                <svg
+                  class="w-5 h-5 text-gray-400 absolute left-3 top-2.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Results Table -->
+            <div class="overflow-x-auto scrollbar-thin">
+              <table class="min-w-full divide-y divide-dark-600">
+                <thead class="bg-dark-700">
+                  <tr>
+                    <th
+                      scope="col"
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
+                    >
+                      Ano
+                    </th>
+                    <th
+                      scope="col"
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
+                    >
+                      Combustível
+                    </th>
+                    <th
+                      scope="col"
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
+                    >
+                      Valor
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="bg-dark-800 divide-y divide-dark-600">
+                  <tr class="hover:bg-dark-700 transition cursor-pointer">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-200"
+                    >
+                      2023
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-400"
+                    >
+                      Gasolina
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-primary-400 font-medium"
+                    >
+                      R$ 85.490
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-dark-700 transition cursor-pointer">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-200"
+                    >
+                      2022
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-400"
+                    >
+                      Gasolina
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-primary-400 font-medium"
+                    >
+                      R$ 78.360
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-dark-700 transition cursor-pointer">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-200"
+                    >
+                      2021
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-400"
+                    >
+                      Gasolina
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-primary-400 font-medium"
+                    >
+                      R$ 72.810
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="flex justify-center mt-6">
+              <nav
+                class="inline-flex rounded-md shadow-sm -space-x-px"
+                aria-label="Pagination"
+              >
+                <button
+                  class="px-3 py-2 rounded-l-md bg-dark-700 text-gray-400 hover:bg-dark-600 transition"
+                >
+                  <span class="sr-only">Previous</span>
+                  <svg
+                    class="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 19l-7-7 7-7"
+                    ></path>
+                  </svg>
+                </button>
+                <button
+                  aria-current="page"
+                  class="px-4 py-2 bg-primary-600 text-white font-medium"
+                >
+                  1
+                </button>
+                <button
+                  class="px-4 py-2 bg-dark-700 text-gray-400 hover:bg-dark-600 transition"
+                >
+                  2
+                </button>
+                <button
+                  class="px-4 py-2 bg-dark-700 text-gray-400 hover:bg-dark-600 transition"
+                >
+                  3
+                </button>
+                <button
+                  class="px-3 py-2 rounded-r-md bg-dark-700 text-gray-400 hover:bg-dark-600 transition"
+                >
+                  <span class="sr-only">Next</span>
+                  <svg
+                    class="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 5l7 7-7 7"
+                    ></path>
+                  </svg>
+                </button>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Simples animação para os elementos de resultado
+      document.addEventListener('DOMContentLoaded', () => {
+        const results = document.querySelectorAll('.fade-in')
+        results.forEach((el, index) => {
+          el.style.animationDelay = `${index * 0.1}s`
+        })
+      })
+    </script>
+  </body>
+</html>
