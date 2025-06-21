@@ -1,134 +1,61 @@
-import { useStep } from '@/app/providers/StepProvider'
-import { fetchData } from '@/services/FetchData'
-import { useEffect, useState, useRef } from 'react'
-import Skeleton from './Skeleton'
-import { useBreadcrumbs } from '@/app/providers/BreadcrumbsProvider'
+import { useState, useRef, useEffect } from 'react';
+import Skeleton from './Skeleton';
+import { useFipe } from '@/store/fipeStore';
 
 const Brands = () => {
-  const { step, setStep } = useStep()
-  const [brands, setBrands] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
-  const [result, setResult] = useState([])
-  const [searchTerm, setSearchTerm] = useState('')
-  const searchInputRef = useRef(null)
-  const { breadcrumbs, setBreadcrumbs } = useBreadcrumbs()
+  const { brandList } = useFipe();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredBrands, setFilteredBrands] = useState([]);
+  const searchInputRef = useRef(null);
 
-  const fetchWithRetry = async (url, retries = 3, delay = 1000) => {
-    try {
-      const data = await fetchData(url)
-
-      if (data?.error) {
-        throw new Error(data.error)
-      }
-
-      if (!Array.isArray(data)) {
-        throw new Error('Resposta inválida da API')
-      }
-
-      return data
-    } catch (err) {
-      if (retries > 0) {
-        await new Promise((resolve) => setTimeout(resolve, delay))
-        return fetchWithRetry(url, retries - 1, delay * 1.5) // Backoff exponencial
-      }
-      throw err
-    }
-  }
-
-  const handleBrands = async () => {
-    setLoading(true)
-    setError(null)
-
-    try {
-      if (step.typeId !== '') {
-        const data = await fetchWithRetry(
-          `/api/marcas/${step.refId}/${step.typeId}`
-        )
-        setBrands(data)
-      }
-    } catch (err) {
-      console.error('Erro ao carregar marcas:', err)
-      setError(err.message)
-      setBrands([])
-    } finally {
-      setLoading(false)
-    }
-  }
-
+  // Monitora mudanças no brandList e reseta o filtro
   useEffect(() => {
-    handleBrands()
-    setSearchTerm('')
-    searchInputRef.current?.focus()
-  }, [step])
+    setSearchTerm(''); // Reseta a busca quando a lista muda
+    searchInputRef.current?.focus(); // Mantém o foco no input
+  }, [brandList]);
 
+  // Filtra as marcas conforme o termo de busca
   useEffect(() => {
-    if (!brands) return
+    if (!brandList) return;
 
-    const searchWords = searchTerm.toLowerCase().trim().split(/\s+/)
-    const filtered = brands.filter(
+    const searchWords = searchTerm.toLowerCase().trim().split(/\s+/);
+    const filtered = brandList.filter(
       (brand) =>
-        brand?.brand &&
-        searchWords.every((word) => brand.brand.toLowerCase().includes(word))
-    )
-    setResult(filtered)
-  }, [searchTerm, brands])
-
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value)
-  }
-
-  const handleModel = (e) => {
-    const newStep = { ...step }
-    newStep.brandId = e.target.value
-    setStep(newStep)
-    const newCrumbs = [...breadcrumbs.slice(0, 2), e.target.innerText]
-    setBreadcrumbs(newCrumbs)
-  }
-
-  if (error) {
-    return (
-      <div className="w-full flex flex-col items-center gap-4 p-4 bg-bk-1 rounded-lg border border-bk-3">
-        <p className="text-gr-1">{error}</p>
-        <button
-          onClick={handleBrands}
-          className="px-4 py-2 bg-or-2 text-wt-1 rounded-lg hover:bg-or-1 transition-colors"
-        >
-          Tentar novamente
-        </button>
-      </div>
-    )
-  }
+        brand?.description &&
+        searchWords.every((word) => brand.description.toLowerCase().includes(word))
+    );
+    setFilteredBrands(filtered);
+  }, [searchTerm, brandList]);
 
   return (
     <div className="w-full flex flex-col gap-4">
+      {/* Campo de busca - mantendo o mesmo estilo */}
       <input
         type="search"
         ref={searchInputRef}
         value={searchTerm}
-        onChange={handleSearchChange}
+        onChange={(e) => setSearchTerm(e.target.value)}
         placeholder="Pesquisar marcas..."
         className="w-full px-4 py-3 rounded-lg bg-bk-1 text-sm text-wt-1 placeholder-gr-1 shadow-md focus:outline-none focus:ring-2 focus:ring-or-2 border border-bk-3 transition-colors"
       />
 
-      {loading ? (
-        <Skeleton />
+      {/* Lista de marcas - mantendo o mesmo layout */}
+      {!brandList ? (
+        <Skeleton rows={5} /> // Mostra skeleton enquanto carrega
       ) : (
         <ul
           className="w-full max-h-80 overflow-y-auto bg-bk-1 rounded-lg shadow-md border border-bk-3 divide-y divide-bk-3 scrollbar-thin scrollbar-thumb-bk-3 scrollbar-track-bk-2"
           role="listbox"
         >
-          {result.length > 0 ? (
-            result.map((item) => (
+          {filteredBrands.length > 0 ? (
+            filteredBrands.map((brand) => (
               <li
-                key={item.id}
-                value={item.id}
-                onClick={handleModel}
+                key={brand.code}
                 className="cursor-pointer px-4 py-3 text-sm text-wt-1 hover:bg-or-2/20 transition-colors group"
                 role="option"
               >
                 <span className="group-hover:text-or-1 transition-colors">
-                  {item.brand}
+                  {brand.description}
                 </span>
               </li>
             ))
@@ -142,7 +69,7 @@ const Brands = () => {
         </ul>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Brands
+export default Brands;

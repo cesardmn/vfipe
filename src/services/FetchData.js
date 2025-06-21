@@ -1,37 +1,41 @@
-export const fetchData = async (url) => {
-  const getCachedData = (url) => {
-    const cachedData = localStorage.getItem(url)
-    return cachedData ? JSON.parse(cachedData) : null
-  }
+export async function fetchAndCacheData(url) {
 
-  const cacheData = (url, data) => {
-    if (!data.error) {
-      localStorage.setItem(url, JSON.stringify(data))
+  // 1. Verifica se já existe no localStorage
+  const cachedData = localStorage.getItem(url)
+  if (cachedData) {
+    return {
+      ok: true,
+      status: 200,
+      statusText: 'OK (from cache)',
+      data: JSON.parse(cachedData),
     }
   }
 
+  // 2. Faz a requisição se não tiver no cache
   try {
-    const cachedData = getCachedData(url)
-    if (cachedData) {
-      console.log('Using cached data')
-      return cachedData
-    }
-
     const response = await fetch(url)
-    const data = await response.json()
 
-    if (!response.ok || data.error) {
-      throw new Error(data.error || 'Network response was not ok')
+    const { ok, status, statusText, } = response
+    const responseApi = await response.json()
+
+    if (ok) {
+      // 3. Salva no localStorage apenas se ok === true
+      localStorage.setItem(url, JSON.stringify(responseApi.data))
     }
 
-    cacheData(url, data)
-    console.log('Fetched new data')
-    return data
+    return { ok, status, statusText, data }
   } catch (error) {
-    console.error('Failed to fetch data:', error)
-    return null
+    console.error('Erro ao consultar API externa:', error)
+
+    return {
+      ok: false,
+      status: 502,
+      statusText: 'Erro ao consultar serviço externo',
+      data: null,
+    }
   }
 }
+
 
 export const referenceUpdate = async () => {
   const getCurrentMonthAndYear = () => {

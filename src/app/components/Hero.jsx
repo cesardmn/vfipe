@@ -1,86 +1,41 @@
+import { FiTrendingUp, FiCheck } from 'react-icons/fi';
+
 const Hero = () => {
   return (
-    <div className="h-full bg-bk-2 rounded-xl p-6 shadow-lg flex flex-col">
-      <div className="flex flex-col justify-between h-full">
-        <h2 className="text-2xl font-bold text-or-2">
-          Consulta FIPE Simplificada
-        </h2>
-        <p className="text-gr-1">
-          Obtenha valores oficiais de veículos diretamente da tabela FIPE de
-          forma rápida e intuitiva.
-        </p>
+    <aside className="lg:w-1/4 lg:min-w-[300px] lg:h-full max-h-[40rem]">
+      <article className="h-full bg-bk-2 rounded-xl p-6 shadow-lg flex flex-col justify-evenly">
+        <header>
+          <h2 className="text-2xl font-bold text-or-2">Consulta FIPE Simplificada</h2>
+        </header>
 
-        <div className="bg-bk-1 p-4 rounded-lg">
+        <div className="my-4">
+          <p className="text-gr-1">
+            Obtenha valores oficiais de veículos diretamente da tabela FIPE de
+            forma rápida e intuitiva.
+          </p>
+        </div>
+
+        <section className="bg-bk-1 p-4 rounded-lg">
           <h3 className="font-semibold text-or-1 mb-2 flex items-center">
-            <svg
-              className="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-              ></path>
-            </svg>
+            <FiTrendingUp className="w-5 h-5 mr-2" />
             Destaques:
           </h3>
           <ul className="space-y-2 text-gr-1">
-            <li className="flex items-start">
-              <svg
-                className="w-5 h-5 text-of-green-2 mr-2 flex-shrink-0"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 13l4 4L19 7"
-                ></path>
-              </svg>
-              Dados direto da tabela FIPE oficial
-            </li>
-            <li className="flex items-start">
-              <svg
-                className="w-5 h-5 text-of-green-2 mr-2 flex-shrink-0"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 13l4 4L19 7"
-                ></path>
-              </svg>
-              Consultas rápidas e sem complicação
-            </li>
-            <li className="flex items-start">
-              <svg
-                className="w-5 h-5 text-of-green-2 mr-2 flex-shrink-0"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 13l4 4L19 7"
-                ></path>
-              </svg>
-              Filtro avançado para melhor localização das características
-            </li>
+            <FeatureItem text="Dados direto da tabela FIPE oficial" />
+            <FeatureItem text="Consultas rápidas e sem complicação" />
+            <FeatureItem text="Filtro avançado para melhor localização" />
           </ul>
-        </div>
-      </div>
-    </div>
-  )
-}
+        </section>
+      </article>
+    </aside>
+  );
+};
 
-export default Hero
+const FeatureItem = ({ text }) => (
+  <li className="flex items-start">
+    <FiCheck className="w-5 h-5 text-of-green-2 mr-2 flex-shrink-0" />
+    {text}
+  </li>
+);
+
+export default Hero;

@@ -19,19 +19,18 @@ export async function GET(requestParams) {
 
   try {
     const apiResponse = await fetch(urlToFetch, requestOptions)
-    if (!apiResponse.ok) {
-      throw new Error('Network response was not ok')
-    }
+    const { ok, status, statusText } = apiResponse
+    const data = await apiResponse.json()
 
-    const responseData = await apiResponse.json()
-    const formattedResponse = responseData.map((item) => ({
-      id: item.Value,
-      brand: item.Label.trim(),
-    }))
-
-    return Response.json(formattedResponse)
+    return Response.json({ ok, status, statusText, data })
   } catch (error) {
-    console.error(error)
-    return Response.json({ error: 'Bad Request!' })
+    console.error('Erro ao consultar API externa:', error)
+
+    return Response.json({
+      ok: false,
+      status: 502,
+      statusText: 'Erro ao consultar serviço externo',
+      data: null
+    })
   }
 }

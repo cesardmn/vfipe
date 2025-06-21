@@ -1,13 +1,19 @@
 'use client'
 
-import { BreadcrumbsProvider } from './BreadcrumbsProvider'
+import { LoadingProvider } from './LoadingProvider'
 import { StepProvider } from './StepProvider'
+import { BreadcrumbsProvider } from './BreadcrumbsProvider'
 
 const ClientProvider = ({ children }) => {
   return (
-    <StepProvider>
-      <BreadcrumbsProvider>{children}</BreadcrumbsProvider>
-    </StepProvider>
+
+    <LoadingProvider>
+      <StepProvider>
+        <BreadcrumbsProvider>
+          {children}
+        </BreadcrumbsProvider>
+      </StepProvider>
+    </LoadingProvider>
   )
 }
 
