@@ -1,37 +1,51 @@
-export const fetchData = async (url) => {
-  const getCachedData = (url) => {
-    const cachedData = localStorage.getItem(url)
-    return cachedData ? JSON.parse(cachedData) : null
-  }
+export async function fetchAndCacheData(url, resource, maxRetries = 3, delay = 500) {
 
-  const cacheData = (url, data) => {
-    if (!data.error) {
-      localStorage.setItem(url, JSON.stringify(data))
+  const cachedData = localStorage.getItem(url)
+  if (cachedData) {
+    console.log(`${resource} from cache`)
+    return {
+      ok: true,
+      status: 200,
+      statusText: `${resource} from cache`,
+      data: JSON.parse(cachedData),
     }
   }
 
-  try {
-    const cachedData = getCachedData(url)
-    if (cachedData) {
-      console.log('Using cached data')
-      return cachedData
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const response = await fetch(url)
+      const { ok, status, statusText } = response
+      const responseApi = await response.json()
+
+      if (ok) {
+        console.log(`${resource} from fipe`)
+        localStorage.setItem(url, JSON.stringify(responseApi.data))
+      }
+
+      return {
+        ok,
+        status,
+        statusText,
+        data: responseApi.data,
+      }
+
+    } catch (error) {
+      console.error(`Erro na tentativa ${attempt}:`, error)
+
+      if (attempt === maxRetries) {
+        return {
+          ok: false,
+          status: 502,
+          statusText: 'Erro ao consultar serviço externo',
+          data: null,
+        }
+      }
+
+      await new Promise(resolve => setTimeout(resolve, delay))
     }
-
-    const response = await fetch(url)
-    const data = await response.json()
-
-    if (!response.ok || data.error) {
-      throw new Error(data.error || 'Network response was not ok')
-    }
-
-    cacheData(url, data)
-    console.log('Fetched new data')
-    return data
-  } catch (error) {
-    console.error('Failed to fetch data:', error)
-    return null
   }
 }
+
 
 export const referenceUpdate = async () => {
   const getCurrentMonthAndYear = () => {
