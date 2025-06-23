@@ -15,9 +15,9 @@ const Content = () => {
   return (
     <main className="flex-1 min-h-0 overflow-hidden lg:h-full max-h-[40rem] bg-bk-2 rounded-xl shadow-lg border border-bk-3 flex flex-col">
 
-      <div className="px-6 py-4 border-b border-bk-3 shrink-0">
+      {/* <div className="px-6 py-4 border-b border-bk-3 shrink-0">
         <Breadcrumbs />
-      </div>
+      </div> */}
 
       <div className="flex flex-col lg:flex-row flex-1 min-h-0">
 

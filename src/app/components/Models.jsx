@@ -38,7 +38,8 @@ const Models = () => {
         const description = modelYear.Label;
         const rawLabel = String(modelYear.Label);
         const yearPart = rawLabel.split(' ')
-        const year = String(yearPart[0]) === '32000' ? '0Km' : yearPart[0]
+        const year = String(yearPart[0]).trim() === '32000' ? '0Km' : yearPart[0]
+        console.log(year)
         const fuel = yearPart.slice(1).join(' ')
         return {
           id,
