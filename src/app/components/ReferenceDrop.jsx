@@ -1,8 +1,7 @@
 import { useFipe } from '../../store/fipeStore'
 
 const ReferenceDrop = () => {
-
-  const { referenceTableList, setRefId } = useFipe();
+  const { referenceTableList, setRefId } = useFipe()
 
   const handleChange = (e) => {
     const id = e.target.value

@@ -1,40 +1,52 @@
-import { useState, useRef, useEffect } from 'react';
-import Skeleton from './Skeleton';
-import { useFipe } from '@/store/fipeStore';
+import { useState, useRef, useEffect } from 'react'
+import Skeleton from './Skeleton'
+import { useFipe } from '@/store/fipeStore'
 import { fetchAndCacheData } from '../../services/FetchData'
 
 const Brands = () => {
-  const { brandList, setBrandId, setModelList, setResultShow, refId, typeId, setIsLoading } = useFipe();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredBrands, setFilteredBrands] = useState([]);
-  const searchInputRef = useRef(null);
+  const {
+    brandList,
+    setBrandId,
+    setModelList,
+    setResultShow,
+    refId,
+    typeId,
+    setIsLoading,
+  } = useFipe()
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filteredBrands, setFilteredBrands] = useState([])
+  const searchInputRef = useRef(null)
 
   useEffect(() => {
-    setSearchTerm('');
+    setSearchTerm('')
     searchInputRef.current?.focus()
-  }, [brandList]);
-
+  }, [brandList])
 
   useEffect(() => {
-    if (!brandList) return;
+    if (!brandList) return
 
-    const searchWords = searchTerm.toLowerCase().trim().split(/\s+/);
+    const searchWords = searchTerm.toLowerCase().trim().split(/\s+/)
     const filtered = brandList.filter(
       (brand) =>
         brand?.description &&
-        searchWords.every((word) => brand.description.toLowerCase().includes(word))
-    );
-    setFilteredBrands(filtered);
-  }, [searchTerm, brandList]);
+        searchWords.every((word) =>
+          brand.description.toLowerCase().includes(word)
+        )
+    )
+    setFilteredBrands(filtered)
+  }, [searchTerm, brandList])
 
   const handleClick = async (brand) => {
     setIsLoading('result', true)
-    const response = await fetchAndCacheData(`/api/modelos/${refId}/${typeId}/${brand.id}`, 'get models')
+    const response = await fetchAndCacheData(
+      `/api/modelos/${refId}/${typeId}/${brand.id}`,
+      'get models'
+    )
     const { ok, data, status, statusText } = response
 
     if (ok) {
       const models = data.Modelos
-      const formatedModels = models.map(model => ({
+      const formatedModels = models.map((model) => ({
         id: model.Value,
         description: model.Label,
       }))
@@ -47,7 +59,6 @@ const Brands = () => {
 
   return (
     <div className="w-full flex flex-col gap-4">
-
       <input
         type="search"
         ref={searchInputRef}
@@ -87,7 +98,7 @@ const Brands = () => {
         </ul>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Brands;
+export default Brands

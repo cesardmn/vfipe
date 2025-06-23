@@ -22,7 +22,7 @@ export async function GET() {
       ok: false,
       status: 502,
       statusText: 'Erro ao consultar serviço externo',
-      data: null
+      data: null,
     })
   }
 }

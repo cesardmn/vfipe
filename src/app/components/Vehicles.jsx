@@ -19,7 +19,7 @@ const Vehicles = () => {
     setIsLoading('result', true)
     const fetchVehicles = async () => {
       try {
-        const promises = modelYearsList.map(year => {
+        const promises = modelYearsList.map((year) => {
           const url = `/api/vehicle/${refId}/${typeId}/${brandId}/${modelId}/${year.id}`
           return fetchAndCacheData(url, 'get vehicle')
         })
@@ -65,10 +65,19 @@ const Vehicles = () => {
           </thead>
           <tbody>
             {fipeList.map((fipe, index) => (
-              <tr key={`${fipe.data.year}-${index}`} className="hover:bg-bk-2/30 transition">
-                <td className="px-4 py-2 border-b border-bk-3">{String(fipe.data.year) === '32000' ? '0 Km' : fipe.data.year}</td>
-                <td className="px-4 py-2 border-b border-bk-3">{fipe.data.fuel}</td>
-                <td className="px-4 py-2 border-b border-bk-3">{fipe.data.model}</td>
+              <tr
+                key={`${fipe.data.year}-${index}`}
+                className="hover:bg-bk-2/30 transition"
+              >
+                <td className="px-4 py-2 border-b border-bk-3">
+                  {String(fipe.data.year) === '32000' ? '0 Km' : fipe.data.year}
+                </td>
+                <td className="px-4 py-2 border-b border-bk-3">
+                  {fipe.data.fuel}
+                </td>
+                <td className="px-4 py-2 border-b border-bk-3">
+                  {fipe.data.model}
+                </td>
                 <td className="px-4 py-2 border-b border-bk-3 text-green-600 font-medium">
                   {fipe.data.price}
                 </td>
