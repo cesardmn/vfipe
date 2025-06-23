@@ -38,27 +38,56 @@ export async function GET(params) {
 
   try {
     const apiResponse = await fetch(urlToFetch, requestOptions)
-    if (!apiResponse.ok) {
-      throw new Error('Network response was not ok')
+    const { ok, status, statusText } = apiResponse
+    const dataJson = await apiResponse.json()
+    const data = {
+      fipe: dataJson.CodigoFipe,
+      reference: dataJson.MesReferencia.trim(),
+      type: types[dataJson.TipoVeiculo],
+      brand: dataJson.Marca,
+      model: dataJson.Modelo,
+      year: dataJson.AnoModelo,
+      fuel: dataJson.Combustivel,
+      price: dataJson.Valor,
+      authentication: dataJson.Autenticacao,
+      timeStamp: dataJson.DataConsulta,
     }
 
-    const responseData = await apiResponse.json()
-    const formattedResponse = {
-      fipe: responseData.CodigoFipe,
-      reference: responseData.MesReferencia.trim(),
-      type: types[responseData.TipoVeiculo],
-      brand: responseData.Marca,
-      model: responseData.Modelo,
-      year: responseData.AnoModelo,
-      fuel: responseData.Combustivel,
-      price: responseData.Valor,
-      authentication: responseData.Autenticacao,
-      timeStamp: responseData.DataConsulta,
-    }
-
-    return Response.json(formattedResponse)
+    return Response.json({ ok, status, statusText, data })
   } catch (error) {
-    console.error(error)
-    return Response.json({ error: 'Bad Request!' })
+    console.error('Erro ao consultar API externa:', error)
+
+    return Response.json({
+      ok: false,
+      status: 502,
+      statusText: 'Erro ao consultar serviço externo',
+      data: null
+    })
   }
+
+  // try {
+  //   const apiResponse = await fetch(urlToFetch, requestOptions)
+  //   if (!apiResponse.ok) {
+  //     throw new Error('Network response was not ok')
+  //   }
+
+  //   const responseData = await apiResponse.json()
+  //   const formattedResponse = {
+  //     fipe: responseData.CodigoFipe,
+  //     reference: responseData.MesReferencia.trim(),
+  //     type: types[responseData.TipoVeiculo],
+  //     brand: responseData.Marca,
+  //     model: responseData.Modelo,
+  //     year: responseData.AnoModelo,
+  //     fuel: responseData.Combustivel,
+  //     price: responseData.Valor,
+  //     authentication: responseData.Autenticacao,
+  //     timeStamp: responseData.DataConsulta,
+  //   }
+
+  //   return Response.json(formattedResponse)
+  // } catch (error) {
+  //   console.error(error)
+  //   return Response.json({ error: 'Bad Request!' })
+  // }
 }

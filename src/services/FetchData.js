@@ -1,6 +1,4 @@
-export async function fetchAndCacheData(url) {
-
-  // 1. Verifica se já existe no localStorage
+export async function fetchAndCacheData(url, maxRetries = 3, delay = 500) {
   const cachedData = localStorage.getItem(url)
   if (cachedData) {
     return {
@@ -11,27 +9,36 @@ export async function fetchAndCacheData(url) {
     }
   }
 
-  // 2. Faz a requisição se não tiver no cache
-  try {
-    const response = await fetch(url)
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const response = await fetch(url)
+      const { ok, status, statusText } = response
+      const responseApi = await response.json()
 
-    const { ok, status, statusText, } = response
-    const responseApi = await response.json()
+      if (ok) {
+        localStorage.setItem(url, JSON.stringify(responseApi.data))
+      }
 
-    if (ok) {
-      // 3. Salva no localStorage apenas se ok === true
-      localStorage.setItem(url, JSON.stringify(responseApi.data))
-    }
+      return {
+        ok,
+        status,
+        statusText,
+        data: responseApi.data,
+      }
 
-    return { ok, status, statusText, data }
-  } catch (error) {
-    console.error('Erro ao consultar API externa:', error)
+    } catch (error) {
+      console.error(`Erro na tentativa ${attempt}:`, error)
 
-    return {
-      ok: false,
-      status: 502,
-      statusText: 'Erro ao consultar serviço externo',
-      data: null,
+      if (attempt === maxRetries) {
+        return {
+          ok: false,
+          status: 502,
+          statusText: 'Erro ao consultar serviço externo',
+          data: null,
+        }
+      }
+
+      await new Promise(resolve => setTimeout(resolve, delay))
     }
   }
 }
