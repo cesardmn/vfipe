@@ -5,13 +5,7 @@ import Skeleton from './Skeleton'
 import Vehicles from './Vehicles'
 
 const Result = () => {
-  const {
-    resultShow,
-    isLoading,
-    brandList,
-    modelList,
-    vehicleList,
-  } = useFipe()
+  const { resultShow, isLoading, brandList, modelList, vehicleList } = useFipe()
 
   // Helper para verificar se os dados necessários ainda não estão prontos
   const isWaiting = () => {

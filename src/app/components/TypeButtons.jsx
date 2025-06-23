@@ -1,14 +1,11 @@
-import { FaMotorcycle, FaCar, FaTruck } from 'react-icons/fa';
-import { useFipe } from '../../store/fipeStore';
-import Skeleton from './Skeleton';
+import { FaMotorcycle, FaCar, FaTruck } from 'react-icons/fa'
+import { useFipe } from '../../store/fipeStore'
+import Skeleton from './Skeleton'
 import { fetchAndCacheData } from '../../services/FetchData'
 
 const TypeButtons = () => {
-  const { refId,
-    setTypeId,
-    setBrandList,
-    setResultShow,
-    setIsLoading } = useFipe();
+  const { refId, setTypeId, setBrandList, setResultShow, setIsLoading } =
+    useFipe()
 
   const handleClick = async (type) => {
     setIsLoading('result', true)
@@ -25,23 +22,37 @@ const TypeButtons = () => {
       setResultShow('brands')
     }
     setIsLoading('result', false)
-  };
+  }
 
   return (
-
     <div className="h-full flex flex-col gap-3">
-      <h3 className="block mb-2 text-xs font-medium text-gr-2 uppercase">Tipo de veículo</h3>
-      {!refId ?
-        <Skeleton rows={3} /> :
+      <h3 className="block mb-2 text-xs font-medium text-gr-2 uppercase">
+        Tipo de veículo
+      </h3>
+      {!refId ? (
+        <Skeleton rows={3} />
+      ) : (
         <>
-          <TypeButton onClick={() => handleClick({ id: 1, description: "carro" })} icon={<FaCar />} label="Carro" />
-          <TypeButton onClick={() => handleClick({ id: 2, description: "moto" })} icon={<FaMotorcycle />} label="Moto" />
-          <TypeButton onClick={() => handleClick({ id: 3, description: "pesado" })} icon={<FaTruck />} label="Pesado" />
-        </>}
+          <TypeButton
+            onClick={() => handleClick({ id: 1, description: 'carro' })}
+            icon={<FaCar />}
+            label="Carro"
+          />
+          <TypeButton
+            onClick={() => handleClick({ id: 2, description: 'moto' })}
+            icon={<FaMotorcycle />}
+            label="Moto"
+          />
+          <TypeButton
+            onClick={() => handleClick({ id: 3, description: 'pesado' })}
+            icon={<FaTruck />}
+            label="Pesado"
+          />
+        </>
+      )}
     </div>
-
-  );
-};
+  )
+}
 
 const TypeButton = ({ icon, label, onClick }) => {
   return (
@@ -52,7 +63,7 @@ const TypeButton = ({ icon, label, onClick }) => {
       <span className="text-xl">{icon}</span>
       <span className="text-sm font-medium">{label}</span>
     </button>
-  );
-};
+  )
+}
 
-export default TypeButtons;
+export default TypeButtons

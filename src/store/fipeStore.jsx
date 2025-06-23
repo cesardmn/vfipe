@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from 'zustand'
 
 export const useFipe = create((set) => ({
   referenceTableList: [],
@@ -44,12 +44,11 @@ export const useFipe = create((set) => ({
     reference: false,
     result: false,
   },
-  setIsLoading: (key, value) => set(state => ({
-    isLoading: {
-      ...state.isLoading,
-      [key]: value
-    }
-  })),
-
-}));
-
+  setIsLoading: (key, value) =>
+    set((state) => ({
+      isLoading: {
+        ...state.isLoading,
+        [key]: value,
+      },
+    })),
+}))

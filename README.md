@@ -78,7 +78,6 @@ v-fipe/
 - [React Icons](https://react-icons.github.io/react-icons/)
 - [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
 
-
 ## Licença
 
 MIT © 2025 [Cesar Dimi]

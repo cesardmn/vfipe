@@ -1,30 +1,41 @@
-import { useState, useRef, useEffect } from 'react';
-import Skeleton from './Skeleton';
-import { useFipe } from '@/store/fipeStore';
+import { useState, useRef, useEffect } from 'react'
+import Skeleton from './Skeleton'
+import { useFipe } from '@/store/fipeStore'
 import { fetchAndCacheData } from '../../services/FetchData'
 
 const Models = () => {
-  const { modelList, refId, typeId, brandId, setModelId, setModelYearsList, setResultShow, setIsLoading } = useFipe()
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredModels, setFilteredModels] = useState([]);
-  const searchInputRef = useRef(null);
+  const {
+    modelList,
+    refId,
+    typeId,
+    brandId,
+    setModelId,
+    setModelYearsList,
+    setResultShow,
+    setIsLoading,
+  } = useFipe()
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filteredModels, setFilteredModels] = useState([])
+  const searchInputRef = useRef(null)
 
   useEffect(() => {
-    setSearchTerm('');
+    setSearchTerm('')
     searchInputRef.current?.focus()
-  }, [modelList]);
+  }, [modelList])
 
   useEffect(() => {
-    if (!modelList) return;
+    if (!modelList) return
 
-    const searchWords = searchTerm.toLowerCase().trim().split(/\s+/);
+    const searchWords = searchTerm.toLowerCase().trim().split(/\s+/)
     const filtered = modelList.filter(
       (model) =>
         model?.description &&
-        searchWords.every((word) => model.description.toLowerCase().includes(word))
-    );
-    setFilteredModels(filtered);
-  }, [searchTerm, modelList]);
+        searchWords.every((word) =>
+          model.description.toLowerCase().includes(word)
+        )
+    )
+    setFilteredModels(filtered)
+  }, [searchTerm, modelList])
 
   const handleClick = async (model) => {
     setIsLoading('result', true)
@@ -33,12 +44,13 @@ const Models = () => {
     const { ok, data, status, statusText } = response
 
     if (ok) {
-      const formatedModelYears = data.map(modelYear => {
-        const id = modelYear.Value;
-        const description = modelYear.Label;
-        const rawLabel = String(modelYear.Label);
+      const formatedModelYears = data.map((modelYear) => {
+        const id = modelYear.Value
+        const description = modelYear.Label
+        const rawLabel = String(modelYear.Label)
         const yearPart = rawLabel.split(' ')
-        const year = String(yearPart[0]).trim() === '32000' ? '0Km' : yearPart[0]
+        const year =
+          String(yearPart[0]).trim() === '32000' ? '0Km' : yearPart[0]
         console.log(year)
         const fuel = yearPart.slice(1).join(' ')
         return {
@@ -46,15 +58,14 @@ const Models = () => {
           description,
           year,
           fuel,
-        };
-      });
+        }
+      })
 
-      setModelYearsList(formatedModelYears);
-      setModelId(model.id);
-      setResultShow('vehicles');
+      setModelYearsList(formatedModelYears)
+      setModelId(model.id)
+      setResultShow('vehicles')
       setIsLoading('result', false)
     }
-
   }
 
   return (
@@ -67,7 +78,6 @@ const Models = () => {
         placeholder="Pesquisar modelos..."
         className="w-full px-4 py-3 rounded-lg bg-bk-1 text-sm text-wt-1 placeholder-gr-1 shadow-md focus:outline-none focus:ring-2 focus:ring-or-2 border border-bk-3 transition-colors"
       />
-
 
       {!modelList ? (
         <Skeleton rows={5} />
@@ -99,7 +109,7 @@ const Models = () => {
         </ul>
       )}
     </div>
-  );
+  )
 }
 
 export default Models

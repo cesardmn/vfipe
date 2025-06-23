@@ -1,5 +1,9 @@
-export async function fetchAndCacheData(url, resource, maxRetries = 3, delay = 500) {
-
+export async function fetchAndCacheData(
+  url,
+  resource,
+  maxRetries = 3,
+  delay = 500
+) {
   const cachedData = localStorage.getItem(url)
   if (cachedData) {
     console.log(`${resource} from cache`)
@@ -28,7 +32,6 @@ export async function fetchAndCacheData(url, resource, maxRetries = 3, delay = 5
         statusText,
         data: responseApi.data,
       }
-
     } catch (error) {
       console.error(`Erro na tentativa ${attempt}:`, error)
 
@@ -41,11 +44,10 @@ export async function fetchAndCacheData(url, resource, maxRetries = 3, delay = 5
         }
       }
 
-      await new Promise(resolve => setTimeout(resolve, delay))
+      await new Promise((resolve) => setTimeout(resolve, delay))
     }
   }
 }
-
 
 export const referenceUpdate = async () => {
   const getCurrentMonthAndYear = () => {

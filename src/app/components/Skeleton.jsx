@@ -1,4 +1,4 @@
-const Skeleton = ({rows}) => {
+const Skeleton = ({ rows }) => {
   return (
     <div className="w-full flex flex-col gap-4 animate-pulse">
       <div className="h-12 rounded-lg bg-bk-3"></div>
