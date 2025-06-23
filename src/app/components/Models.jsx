@@ -1,52 +1,57 @@
-import { useEffect, useState, useRef } from 'react'
-import { useStep } from '@/app/providers/StepProvider'
-import { fetchData } from '@/services/FetchData'
-import Skeleton from '@/app/components/Skeleton'
-import { useBreadcrumbs } from '@/app/providers/BreadcrumbsProvider'
+import { useState, useRef, useEffect } from 'react';
+import Skeleton from './Skeleton';
+import { useFipe } from '@/store/fipeStore';
+import { fetchAndCacheData } from '../../services/FetchData'
 
 const Models = () => {
-  const { step, setStep } = useStep()
-  const [models, setModels] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [result, setResult] = useState([])
-  const [searchTerm, setSearchTerm] = useState('')
-  const searchInputRef = useRef(null)
-  const { breadcrumbs, setBreadcrumbs } = useBreadcrumbs()
-
-  const handleModels = async () => {
-    setLoading(true)
-    const { refId, typeId, brandId } = step
-    const data = await fetchData(`/api/modelos/${refId}/${typeId}/${brandId}`)
-    setModels(data)
-    setLoading(false)
-  }
+  const { modelList, refId, typeId, brandId, setModelId, setModelYearsList, setResultShow } = useFipe()
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredModels, setFilteredModels] = useState([]);
+  const searchInputRef = useRef(null);
 
   useEffect(() => {
-    handleModels()
-    setSearchTerm('')
-    if (searchInputRef.current) {
-      searchInputRef.current.focus()
+    setSearchTerm('');
+    searchInputRef.current?.focus()
+  }, [modelList]);
+
+  useEffect(() => {
+    if (!modelList) return;
+
+    const searchWords = searchTerm.toLowerCase().trim().split(/\s+/);
+    const filtered = modelList.filter(
+      (model) =>
+        model?.description &&
+        searchWords.every((word) => model.description.toLowerCase().includes(word))
+    );
+    setFilteredModels(filtered);
+  }, [searchTerm, modelList]);
+
+  const handleClick = async (model) => {
+    const url = `/api/anomodelo/${refId}/${typeId}/${brandId}/${model.id}`
+    const response = await fetchAndCacheData(url)
+    const { ok, data, status, statusText } = response
+
+    if (ok) {
+      const formatedModelYears = data.map(modelYear => {
+        const id = modelYear.Value;
+        const description = modelYear.Label;
+        const rawLabel = String(modelYear.Label);
+        const yearPart = rawLabel.split(' ')
+        const year = yearPart[0] === '32000' ? '0Km' : yearPart[0]
+        const fuel = yearPart.slice(1).join(' ')
+        return {
+          id,
+          description,
+          year,
+          fuel,
+        };
+      });
+
+      setModelYearsList(formatedModelYears);
+      setModelId(model.id);
+      setResultShow('vehicles');
     }
-  }, [step])
 
-  useEffect(() => {
-    const searchWords = searchTerm.toLowerCase().trim().split(/\s+/)
-    const filtered = models.filter((item) =>
-      searchWords.every((word) => item.model.toLowerCase().includes(word))
-    )
-    setResult(filtered)
-  }, [searchTerm, models])
-
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value)
-  }
-
-  const handleVehicle = (e) => {
-    const newStep = { ...step }
-    newStep.modelId = e.target.value
-    setStep(newStep)
-    const newCrumbs = [...breadcrumbs.slice(0, 3), e.target.innerText]
-    setBreadcrumbs(newCrumbs)
   }
 
   return (
@@ -55,40 +60,43 @@ const Models = () => {
         type="search"
         ref={searchInputRef}
         value={searchTerm}
-        onChange={handleSearchChange}
-        placeholder="Pesquisar modelos..."
+        onChange={(e) => setSearchTerm(e.target.value)}
+        placeholder="Pesquisar marcas..."
         className="w-full px-4 py-3 rounded-lg bg-bk-1 text-sm text-wt-1 placeholder-gr-1 shadow-md focus:outline-none focus:ring-2 focus:ring-or-2 border border-bk-3 transition-colors"
       />
-      {loading ? (
-        <Skeleton />
+
+
+      {!modelList ? (
+        <Skeleton rows={5} />
       ) : (
         <ul
           className="w-full max-h-80 overflow-y-auto bg-bk-1 rounded-lg shadow-md border border-bk-3 divide-y divide-bk-3 scrollbar-thin scrollbar-thumb-bk-3 scrollbar-track-bk-2"
           role="listbox"
         >
-          {result.length > 0 ? (
-            result.map((item) => (
+          {filteredModels.length > 0 ? (
+            filteredModels.map((model) => (
               <li
-                key={item.id}
-                value={item.id}
-                onClick={(e) => handleVehicle(e)}
+                key={model.id}
                 className="cursor-pointer px-4 py-3 text-sm text-wt-1 hover:bg-or-2/20 transition-colors group"
                 role="option"
+                onClick={() => handleClick(model)}
               >
                 <span className="group-hover:text-or-1 transition-colors">
-                  {item.model}
+                  {model.description}
                 </span>
               </li>
             ))
           ) : (
             <li className="px-4 py-3 text-sm text-gr-1 italic">
-              Nenhum modelo encontrado
+              {searchTerm
+                ? 'Nenhuma marca encontrada'
+                : 'Nenhuma marca disponível'}
             </li>
           )}
         </ul>
       )}
     </div>
-  )
+  );
 }
 
 export default Models

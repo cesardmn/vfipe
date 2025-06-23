@@ -1,42 +1,11 @@
 'use client'
 
-import Skeleton from './Skeleton'
 import ReferenceDrop from './ReferenceDrop'
-import { useLoading } from '@/app/providers/LoadingProvider'
-import { useEffect } from 'react'
-import { useFipe } from '../../store/fipeStore'
-import { fetchAndCacheData } from '../../services/FetchData'
 import Breadcrumbs from './Breadcrumbs'
 import TypeButtons from './TypeButtons'
-import Result  from './Result'
+import Result from './Result'
 
 const Content = () => {
-  const { setreferenceTableList, setRefId, refId } = useFipe()
-
-  useEffect(() => {
-
-
-    const fetchReference = async () => {
-      const response = await fetchAndCacheData('/api/referencia')
-      const { ok, data, status, statusText } = response
-
-      if (ok) {
-        const formatedData = data.map(item => ({
-          id: item.Codigo,
-          description: item.Mes.trim()
-        }));
-        setreferenceTableList(formatedData)
-        setRefId(formatedData[0].id)
-        console.log(statusText)
-      }
-
-      return response
-    }
-
-    fetchReference()
-
-  }, [])
-
 
   return (
     <main className="flex-1 min-h-0 overflow-hidden lg:h-full max-h-[40rem] bg-bk-2 rounded-xl shadow-lg border border-bk-3 flex flex-col">

@@ -5,21 +5,20 @@ import Skeleton from './Skeleton';
 import { fetchAndCacheData } from '../../services/FetchData'
 
 const TypeButtons = () => {
-  const { refId, setType, setBrandList, brandList } = useFipe();
+  const { refId, setTypeId, setBrandList, setResultShow } = useFipe();
 
   const handleClick = async (type) => {
-    setType(type)
+    setTypeId(type.id)
     const url = `/api/marcas/${refId}/${type.id}`
     const response = await fetchAndCacheData(url)
     const { ok, data, status, statusText } = response
 
     if (ok) {
       const formatData = data.map((brandList) => {
-        return {id: brandList.Value, description: brandList.Label}
+        return { id: brandList.Value, description: brandList.Label }
       })
       setBrandList(formatData)
-      console.log(statusText)
-      console.log(brandList)
+      setResultShow('brands')
     }
   };
 

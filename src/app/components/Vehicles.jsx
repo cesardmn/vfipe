@@ -1,113 +1,72 @@
-import { useStep } from '@/app/providers/StepProvider'
-import { fetchData } from '@/services/FetchData'
+import { useFipe } from '../../store/fipeStore'
+import { fetchAndCacheData } from '../../services/FetchData'
 import { useEffect, useState } from 'react'
-import Skeleton from './Skeleton'
 
 const Vehicles = () => {
-  const { step } = useStep()
-  const [vehicles, setVehicles] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [years, setYears] = useState([])
+  const {
+    refId,
+    typeId,
+    brandId,
+    modelId,
+    modelYearsList
+  } = useFipe()
 
-  const fetchAllVehicles = async (fetchedYears) => {
-    const { refId, typeId, brandId, modelId } = step
-    setLoading(true)
-
-    try {
-      const vehiclesData = await Promise.all(
-        fetchedYears.map(async (year) => {
-          const url = `/api/vehicle/${refId}/${typeId}/${brandId}/${modelId}/${year.id}`
-          try {
-            return await fetchData(url)
-          } catch (error) {
-            console.error(
-              `Erro ao buscar veículo para o ano ${year.id}:`,
-              error
-            )
-            return null
-          }
-        })
-      )
-
-      const validVehicles = vehiclesData.filter((vehicle) => vehicle !== null)
-      setVehicles(validVehicles)
-    } catch (error) {
-      console.error('Erro ao buscar veículos:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleYears = async () => {
-    const { refId, typeId, brandId, modelId } = step
-
-    try {
-      const fetchedYears = await fetchData(
-        `/api/anomodelo/${refId}/${typeId}/${brandId}/${modelId}`
-      )
-      setYears(fetchedYears)
-      fetchAllVehicles(fetchedYears)
-    } catch (error) {
-      console.error('Erro ao buscar anos:', error)
-    }
-  }
+  const [fipeList, setFipeList] = useState([])
 
   useEffect(() => {
-    if (step.refId && step.typeId && step.brandId && step.modelId) {
-      handleYears()
-    }
-  }, [step])
+    const fetchVehicles = async () => {
+      try {
+        const promises = modelYearsList.map(year => {
+          const url = `/api/vehicle/${refId}/${typeId}/${brandId}/${modelId}/${year.id}`
+          return fetchAndCacheData(url)
+        })
 
-  if (loading) return <Skeleton />
+        const results = await Promise.all(promises)
+        setFipeList(results)
+      } catch (error) {
+        console.error('Erro ao buscar veículos:', error)
+      }
+    }
+
+    if (modelYearsList.length > 0) {
+      fetchVehicles()
+    }
+  }, [refId, typeId, brandId, modelId, modelYearsList])
 
   return (
-    <div className="w-full mt-4">
-      <div className="overflow-x-auto max-h-[450px] overflow-y-auto rounded-lg shadow-md ring-1 ring-bk-3 scrollbar-thin scrollbar-thumb-bk-3 scrollbar-track-bk-2">
-        <table className="min-w-full divide-y divide-bk-3 bg-bk-1 text-sm">
-          <caption className="text-left px-6 py-3 text-sm font-medium text-or-1 border-b border-bk-3">
-            {vehicles.length > 0
-              ? `Código FIPE: ${vehicles[0].fipe}`
-              : 'Veículos'}
-          </caption>
-          <thead className="bg-bk-2 sticky top-0 z-10">
+    <div className="flex flex-col gap-6">
+      {/* Cabeçalho principal */}
+      {fipeList.length > 0 && (
+        <div className="bg-bk-2 p-4 rounded-md shadow border border-bk-3">
+          <h3 className="text-xl font-semibold text-bk-12 mb-1">
+            {fipeList[0].data.fipe}
+          </h3>
+          <p className="text-bk-11">
+            {fipeList[0].data.brand} • {fipeList[0].data.model}
+          </p>
+        </div>
+      )}
+
+      {/* Tabela de veículos */}
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-bk-1 border border-bk-3 rounded-md">
+          <thead className="bg-bk-2 text-bk-12 text-left">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-wt-1 uppercase tracking-wider">
-                Ano
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-wt-1 uppercase tracking-wider">
-                Combustível
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-wt-1 uppercase tracking-wider">
-                Valor
-              </th>
+              <th className="px-4 py-2 border-b border-bk-3">Ano</th>
+              <th className="px-4 py-2 border-b border-bk-3">Modelo</th>
+              <th className="px-4 py-2 border-b border-bk-3">Preço</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-bk-3">
-            {vehicles.length > 0 ? (
-              vehicles.map((vehicle) => (
-                <tr
-                  key={vehicle.authentication}
-                  className="hover:bg-bk-2 transition-colors"
-                >
-                  <td className="px-6 py-4 text-wt-1">
-                    {vehicle.year === '32000' ? 'Zero Km' : vehicle.year}
-                  </td>
-                  <td className="px-6 py-4 text-wt-1">{vehicle.fuel}</td>
-                  <td className="px-6 py-4 text-or-1 font-medium">
-                    {vehicle.price}
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td
-                  colSpan="3"
-                  className="px-6 py-4 text-center text-gr-1 italic"
-                >
-                  Nenhum veículo encontrado
+          <tbody>
+            {fipeList.map((fipe, index) => (
+              <tr key={`${fipe.data.year}-${index}`} className="hover:bg-bk-2/30 transition">
+                <td className="px-4 py-2 border-b border-bk-3">{fipe.data.year}</td>
+                <td className="px-4 py-2 border-b border-bk-3">{fipe.data.model}</td>
+                <td className="px-4 py-2 border-b border-bk-3 text-green-600 font-medium">
+                  {fipe.data.price}
                 </td>
               </tr>
-            )}
+            ))}
           </tbody>
         </table>
       </div>

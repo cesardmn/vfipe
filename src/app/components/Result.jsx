@@ -1,16 +1,27 @@
 import { useFipe } from '../../store/fipeStore'
 import Brands from './Brands'
+import Models from './Models'
+import Vehicles from './Vehicles'
 
 const Result = () => {
 
-  const { brandList } = useFipe()
+  const { brandList, resultShow } = useFipe()
 
   return (
     <div className="">
       {
-        brandList.length > 0 ?
-        <Brands />:
-        <></>
+        resultShow ===  'brands' &&
+        <Brands />
+      }
+
+      {
+        resultShow ===  'models' &&
+        <Models />
+      }
+
+      {
+        resultShow ===  'vehicles' &&
+        <Vehicles />
       }
     </div>
   )
