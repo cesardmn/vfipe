@@ -4,7 +4,7 @@ import { useFipe } from '@/store/fipeStore';
 import { fetchAndCacheData } from '../../services/FetchData'
 
 const Models = () => {
-  const { modelList, refId, typeId, brandId, setModelId, setModelYearsList, setResultShow } = useFipe()
+  const { modelList, refId, typeId, brandId, setModelId, setModelYearsList, setResultShow, setIsLoading } = useFipe()
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredModels, setFilteredModels] = useState([]);
   const searchInputRef = useRef(null);
@@ -27,8 +27,9 @@ const Models = () => {
   }, [searchTerm, modelList]);
 
   const handleClick = async (model) => {
+    setIsLoading('result', true)
     const url = `/api/anomodelo/${refId}/${typeId}/${brandId}/${model.id}`
-    const response = await fetchAndCacheData(url)
+    const response = await fetchAndCacheData(url, 'get model year')
     const { ok, data, status, statusText } = response
 
     if (ok) {
@@ -37,7 +38,7 @@ const Models = () => {
         const description = modelYear.Label;
         const rawLabel = String(modelYear.Label);
         const yearPart = rawLabel.split(' ')
-        const year = yearPart[0] === '32000' ? '0Km' : yearPart[0]
+        const year = String(yearPart[0]) === '32000' ? '0Km' : yearPart[0]
         const fuel = yearPart.slice(1).join(' ')
         return {
           id,
@@ -50,6 +51,7 @@ const Models = () => {
       setModelYearsList(formatedModelYears);
       setModelId(model.id);
       setResultShow('vehicles');
+      setIsLoading('result', false)
     }
 
   }
@@ -61,7 +63,7 @@ const Models = () => {
         ref={searchInputRef}
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        placeholder="Pesquisar marcas..."
+        placeholder="Pesquisar modelos..."
         className="w-full px-4 py-3 rounded-lg bg-bk-1 text-sm text-wt-1 placeholder-gr-1 shadow-md focus:outline-none focus:ring-2 focus:ring-or-2 border border-bk-3 transition-colors"
       />
 

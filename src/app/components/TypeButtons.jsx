@@ -1,16 +1,20 @@
 import { FaMotorcycle, FaCar, FaTruck } from 'react-icons/fa';
 import { useFipe } from '../../store/fipeStore';
 import Skeleton from './Skeleton';
-
 import { fetchAndCacheData } from '../../services/FetchData'
 
 const TypeButtons = () => {
-  const { refId, setTypeId, setBrandList, setResultShow } = useFipe();
+  const { refId,
+    setTypeId,
+    setBrandList,
+    setResultShow,
+    setIsLoading } = useFipe();
 
   const handleClick = async (type) => {
+    setIsLoading('result', true)
     setTypeId(type.id)
     const url = `/api/marcas/${refId}/${type.id}`
-    const response = await fetchAndCacheData(url)
+    const response = await fetchAndCacheData(url, 'get brands')
     const { ok, data, status, statusText } = response
 
     if (ok) {
@@ -20,6 +24,7 @@ const TypeButtons = () => {
       setBrandList(formatData)
       setResultShow('brands')
     }
+    setIsLoading('result', false)
   };
 
   return (

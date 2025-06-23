@@ -4,7 +4,7 @@ import { useFipe } from '@/store/fipeStore';
 import { fetchAndCacheData } from '../../services/FetchData'
 
 const Brands = () => {
-  const { brandList, setBrandId, setModelList, setResultShow, refId, typeId } = useFipe();
+  const { brandList, setBrandId, setModelList, setResultShow, refId, typeId, setIsLoading } = useFipe();
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredBrands, setFilteredBrands] = useState([]);
   const searchInputRef = useRef(null);
@@ -28,7 +28,8 @@ const Brands = () => {
   }, [searchTerm, brandList]);
 
   const handleClick = async (brand) => {
-    const response = await fetchAndCacheData(`/api/modelos/${refId}/${typeId}/${brand.id}`)
+    setIsLoading('result', true)
+    const response = await fetchAndCacheData(`/api/modelos/${refId}/${typeId}/${brand.id}`, 'get models')
     const { ok, data, status, statusText } = response
 
     if (ok) {
@@ -41,6 +42,7 @@ const Brands = () => {
       setBrandId(brand.id)
       setResultShow('models')
     }
+    setIsLoading('result', false)
   }
 
   return (

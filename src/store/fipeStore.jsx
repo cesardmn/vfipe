@@ -31,9 +31,25 @@ export const useFipe = create((set) => ({
   modelYearsId: '',
   setModelYearsId: (id) => set({ modelYearsId: id }),
 
+  vehicleList: {},
+  setVehicleList: (obj) => set({ vehicleList: obj }),
+
+  brandId: '',
+  setBrandId: (id) => set({ brandId: id }),
 
   resultShow: '',
   setResultShow: (id) => set({ resultShow: id }),
+
+  isLoading: {
+    reference: false,
+    result: false,
+  },
+  setIsLoading: (key, value) => set(state => ({
+    isLoading: {
+      ...state.isLoading,
+      [key]: value
+    }
+  })),
 
 }));
 

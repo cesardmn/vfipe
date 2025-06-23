@@ -1,10 +1,12 @@
-export async function fetchAndCacheData(url, maxRetries = 3, delay = 500) {
+export async function fetchAndCacheData(url, resource, maxRetries = 3, delay = 500) {
+
   const cachedData = localStorage.getItem(url)
   if (cachedData) {
+    console.log(`${resource} from cache`)
     return {
       ok: true,
       status: 200,
-      statusText: 'OK (from cache)',
+      statusText: `${resource} from cache`,
       data: JSON.parse(cachedData),
     }
   }
@@ -16,6 +18,7 @@ export async function fetchAndCacheData(url, maxRetries = 3, delay = 500) {
       const responseApi = await response.json()
 
       if (ok) {
+        console.log(`${resource} from fipe`)
         localStorage.setItem(url, JSON.stringify(responseApi.data))
       }
 
