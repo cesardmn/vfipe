@@ -78,17 +78,10 @@ v-fipe/
 - [React Icons](https://react-icons.github.io/react-icons/)
 - [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
 
-## Roadmap
-
-- [ ] Implementar Breadcrumbs de navegação
-- [ ] Adicionar histórico de consultas recentes
-- [ ] Implementar busca por código FIPE
-- [ ] Adicionar comparação entre veículos
-- [ ] Criar visualização de gráfico de valor histórico
 
 ## Licença
 
-MIT © 2025 [Seu Nome]
+MIT © 2025 [Cesar Dimi]
 
 ---
 
