@@ -92,6 +92,7 @@ const Models = () => {
                 key={model.id}
                 className="cursor-pointer px-4 py-3 text-sm text-wt-1 hover:bg-or-2/20 transition-colors group"
                 role="option"
+                aria-selected={model === model.id}
                 onClick={() => handleClick(model)}
               >
                 <span className="group-hover:text-or-1 transition-colors">
