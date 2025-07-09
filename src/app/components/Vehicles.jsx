@@ -36,7 +36,15 @@ const Vehicles = () => {
       fetchVehicles()
     }
     setIsLoading('result', false)
-  }, [refId, typeId, brandId, modelId, modelYearsList])
+  }, [
+    refId,
+    typeId,
+    brandId,
+    modelId,
+    modelYearsList,
+    setIsLoading,
+    setVehicleList,
+  ])
 
   return (
     <div className="flex flex-col gap-6">
